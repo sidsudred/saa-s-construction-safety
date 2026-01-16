@@ -13,11 +13,11 @@ interface InspectionFindingsProps {
 }
 
 export function InspectionFindings({ findings, onCreateCapa }: InspectionFindingsProps) {
-    const failedFindings = findings.filter(f => f.response === "fail")
-
-    if (!findings || findings.length === 0) {
+    if (!findings || !Array.isArray(findings) || findings.length === 0) {
         return <div className="text-center py-8 text-muted-foreground">No inspection items recorded</div>
     }
+
+    const failedFindings = findings.filter(f => f.response === "fail")
 
     return (
         <div className="space-y-6">

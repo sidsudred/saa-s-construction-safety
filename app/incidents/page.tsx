@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Plus, Search, Filter, MoreHorizontal, AlertTriangle, Clock, MapPin, User, ShieldAlert } from "lucide-react"
 import { RecordStatusPill } from "@/components/records/record-status-pill"
+
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { cn } from "@/lib/utils"
@@ -65,6 +66,8 @@ export default function IncidentsListPage() {
           Filters
         </Button>
       </div>
+
+
 
       <div className="grid gap-4">
         {filteredRecords.length === 0 ? (

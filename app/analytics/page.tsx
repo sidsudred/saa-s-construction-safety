@@ -20,9 +20,15 @@ import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/com
 import { useMemo } from "react"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { OSHAReportGenerator } from "@/components/analytics/osha-report-generator"
+import { IncidentRecord, RecordMetadata } from "@/lib/types/safety-record"
 
 export default function AnalyticsPage() {
   const { records } = useSafetyRecordStore()
+
+  // Filter for incident records for OSHA reporting
+  const incidentRecords = records.filter((r: RecordMetadata) => r.type === "incident") as unknown as IncidentRecord[]
 
   const stats = useMemo(() => {
     const totalObservations = records.filter(r => r.type === "observation").length
@@ -60,185 +66,209 @@ export default function AnalyticsPage() {
             Intelligence Dashboard
           </div>
           <h1 className="text-3xl font-black tracking-tight font-display">Safety Analytics</h1>
-          <p className="text-muted-foreground text-sm font-medium">Real-time indicators and performance trends across all projects.</p>
+          <p className="text-muted-foreground text-sm font-medium">Real-time indicators, performance trends, and compliance reporting.</p>
         </div>
       </div>
 
-      <AnalyticsFilters />
+      <Tabs defaultValue="dashboard" className="space-y-6">
+        <TabsList className="bg-muted p-1 rounded-xl">
+          <TabsTrigger value="dashboard" className="rounded-lg px-4 py-2 text-sm font-bold data-[state=active]:bg-white data-[state=active]:text-primary data-[state=active]:shadow-sm">
+            Overview Dashboard
+          </TabsTrigger>
+          <TabsTrigger value="osha" className="rounded-lg px-4 py-2 text-sm font-bold data-[state=active]:bg-white data-[state=active]:text-primary data-[state=active]:shadow-sm">
+            OSHA Compliance
+          </TabsTrigger>
+        </TabsList>
 
-      <div className="space-y-6">
-        <div className="flex items-center gap-2">
-          <Badge className="bg-indigo-600 font-bold uppercase tracking-widest text-[10px] py-1 px-3">Leading Indicators</Badge>
-          <div className="h-px bg-border/60 flex-1" />
-          <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest opacity-60">Proactive Metrics</p>
-        </div>
+        <TabsContent value="dashboard" className="space-y-8 focus-visible:outline-none">
+          <AnalyticsFilters />
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          <IndicatorTile
-            label="Reporting Rate"
-            value={stats.totalObservations}
-            unit="Observations"
-            trend={12}
-            target={50}
-            icon={Eye}
-            color="indigo"
-            href="/observations"
-          />
-          <IndicatorTile
-            label="Positive Ratio"
-            value={stats.positiveRatio}
-            unit="%"
-            trend={5}
-            target="80%"
-            icon={CheckCircle2}
-            color="emerald"
-            href="/observations"
-          />
-          <IndicatorTile
-            label="Active Permits"
-            value={stats.activePermits}
-            unit="Active"
-            trend={0}
-            target={10}
-            icon={ShieldCheck}
-            color="indigo"
-            href="/permits"
-          />
-          <IndicatorTile
-            label="Average Closure"
-            value={3.2}
-            unit="Days"
-            trend={-8}
-            target="4.0"
-            icon={Clock}
-            color="emerald"
-            href="/actions"
-          />
-        </div>
-      </div>
-
-      <div className="space-y-6">
-        <div className="flex items-center gap-2">
-          <Badge className="bg-red-600 font-bold uppercase tracking-widest text-[10px] py-1 px-3">Lagging Indicators</Badge>
-          <div className="h-px bg-border/60 flex-1" />
-          <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest opacity-60">Reactive Metrics</p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          <IndicatorTile
-            label="Total Incidents"
-            value={stats.totalIncidents}
-            unit="MTI/LTI"
-            trend={-15}
-            target="Zero"
-            icon={AlertOctagon}
-            color="red"
-            href="/incidents"
-          />
-          <IndicatorTile
-            label="High Severity"
-            value={stats.highSeverityIncidents}
-            unit="Critical"
-            trend={20}
-            target="Zero"
-            icon={Zap}
-            color="red"
-            href="/incidents"
-          />
-          <IndicatorTile
-            label="LTIFR"
-            value={stats.ltiFrequency}
-            unit="Index"
-            trend={-2}
-            target="1.0"
-            icon={Activity}
-            color="amber"
-          />
-          <IndicatorTile
-            label="Overdue Actions"
-            value={stats.overdueActions}
-            unit="Pending"
-            trend={50}
-            target="Zero"
-            icon={Construction}
-            color="red"
-            href="/actions"
-          />
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <Card className="lg:col-span-2 shadow-sm border-border/60">
-          <CardHeader>
-            <div className="flex items-center justify-between">
-              <div>
-                <CardTitle className="text-lg font-bold">Safety Event Distribution</CardTitle>
-                <CardDescription>Monthly volume of safety records by category</CardDescription>
-              </div>
-              <Badge variant="outline" className="text-[10px] uppercase font-bold tracking-widest text-indigo-600 border-indigo-200">Trailing 6 Months</Badge>
+          <div className="space-y-6">
+            <div className="flex items-center gap-2">
+              <Badge className="bg-indigo-600 font-bold uppercase tracking-widest text-[10px] py-1 px-3">Leading Indicators</Badge>
+              <div className="h-px bg-border/60 flex-1" />
+              <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest opacity-60">Proactive Metrics</p>
             </div>
-          </CardHeader>
-          <CardContent>
-            <div className="h-[300px] w-full flex items-end justify-between gap-2 px-4 pb-8 border-b">
-              {[45, 62, 38, 75, 54, 68].map((h, i) => (
-                <div key={i} className="flex-1 group relative">
-                  <div
-                    className="bg-indigo-500/20 group-hover:bg-indigo-500/40 transition-all rounded-t-lg w-full"
-                    style={{ height: `${h}%` }}
-                  />
-                  <div
-                    className="bg-indigo-600 rounded-t-lg w-full absolute bottom-0"
-                    style={{ height: `${h * 0.4}%` }}
-                  />
-                  <span className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[10px] font-bold text-muted-foreground uppercase tracking-tighter">
-                    {['Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan'][i]}
-                  </span>
-                </div>
-              ))}
-            </div>
-            <div className="flex items-center justify-center gap-6 mt-10">
-              <div className="flex items-center gap-2">
-                <div className="h-3 w-3 rounded-full bg-indigo-500/40" />
-                <span className="text-[10px] font-bold uppercase text-muted-foreground">Leading Events</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="h-3 w-3 rounded-full bg-indigo-600" />
-                <span className="text-[10px] font-bold uppercase text-muted-foreground">Critical Records</span>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
 
-        <Card className="shadow-sm border-border/60">
-          <CardHeader>
-            <CardTitle className="text-lg font-bold">Top Hazard Categories</CardTitle>
-            <CardDescription>Based on recent observations</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-5">
-            {[
-              { label: 'Working at Heights', val: 45 },
-              { label: 'PPE Non-compliance', val: 28 },
-              { label: 'Housekeeping', val: 15 },
-              { label: 'Electrical Safety', val: 12 },
-            ].map((item) => (
-              <div key={item.label} className="space-y-2">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              <IndicatorTile
+                label="Reporting Rate"
+                value={stats.totalObservations}
+                unit="Observations"
+                trend={12}
+                target={50}
+                icon={Eye}
+                color="indigo"
+                href="/observations"
+              />
+              <IndicatorTile
+                label="Positive Ratio"
+                value={stats.positiveRatio}
+                unit="%"
+                trend={5}
+                target="80%"
+                icon={CheckCircle2}
+                color="emerald"
+                href="/observations"
+              />
+              <IndicatorTile
+                label="Active Permits"
+                value={stats.activePermits}
+                unit="Active"
+                trend={0}
+                target={10}
+                icon={ShieldCheck}
+                color="indigo"
+                href="/permits"
+              />
+              <IndicatorTile
+                label="Average Closure"
+                value={3.2}
+                unit="Days"
+                trend={-8}
+                target="4.0"
+                icon={Clock}
+                color="emerald"
+                href="/actions"
+              />
+            </div>
+          </div>
+
+          <div className="space-y-6">
+            <div className="flex items-center gap-2">
+              <Badge className="bg-red-600 font-bold uppercase tracking-widest text-[10px] py-1 px-3">Lagging Indicators</Badge>
+              <div className="h-px bg-border/60 flex-1" />
+              <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest opacity-60">Reactive Metrics</p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              <IndicatorTile
+                label="Total Incidents"
+                value={stats.totalIncidents}
+                unit="MTI/LTI"
+                trend={-15}
+                target="Zero"
+                icon={AlertOctagon}
+                color="red"
+                href="/incidents"
+              />
+              <IndicatorTile
+                label="High Severity"
+                value={stats.highSeverityIncidents}
+                unit="Critical"
+                trend={20}
+                target="Zero"
+                icon={Zap}
+                color="red"
+                href="/incidents"
+              />
+              <IndicatorTile
+                label="LTIFR"
+                value={stats.ltiFrequency}
+                unit="Index"
+                trend={-2}
+                target="1.0"
+                icon={Activity}
+                color="amber"
+              />
+              <IndicatorTile
+                label="Overdue Actions"
+                value={stats.overdueActions}
+                unit="Pending"
+                trend={50}
+                target="Zero"
+                icon={Construction}
+                color="red"
+                href="/actions"
+              />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <Card className="lg:col-span-2 shadow-sm border-border/60">
+              <CardHeader>
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-bold text-slate-700">{item.label}</span>
-                  <span className="text-xs font-black text-indigo-600">{item.val}%</span>
+                  <div>
+                    <CardTitle className="text-lg font-bold">Safety Event Distribution</CardTitle>
+                    <CardDescription>Monthly volume of safety records by category</CardDescription>
+                  </div>
+                  <Badge variant="outline" className="text-[10px] uppercase font-bold tracking-widest text-indigo-600 border-indigo-200">Trailing 6 Months</Badge>
                 </div>
-                <div className="h-2 w-full bg-muted rounded-full overflow-hidden">
-                  <div className="h-full bg-indigo-500 rounded-full" style={{ width: `${item.val}%` }} />
+              </CardHeader>
+              <CardContent>
+                <div className="h-[300px] w-full flex items-end justify-between gap-2 px-4 pb-8 border-b">
+                  {[45, 62, 38, 75, 54, 68].map((h, i) => (
+                    <div key={i} className="flex-1 group relative">
+                      <div
+                        className="bg-indigo-500/20 group-hover:bg-indigo-500/40 transition-all rounded-t-lg w-full"
+                        style={{ height: `${h}%` }}
+                      />
+                      <div
+                        className="bg-indigo-600 rounded-t-lg w-full absolute bottom-0"
+                        style={{ height: `${h * 0.4}%` }}
+                      />
+                      <span className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[10px] font-bold text-muted-foreground uppercase tracking-tighter">
+                        {['Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan'][i]}
+                      </span>
+                    </div>
+                  ))}
                 </div>
-              </div>
-            ))}
+                <div className="flex items-center justify-center gap-6 mt-10">
+                  <div className="flex items-center gap-2">
+                    <div className="h-3 w-3 rounded-full bg-indigo-500/40" />
+                    <span className="text-[10px] font-bold uppercase text-muted-foreground">Leading Events</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="h-3 w-3 rounded-full bg-indigo-600" />
+                    <span className="text-[10px] font-bold uppercase text-muted-foreground">Critical Records</span>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
 
-            <Button variant="ghost" className="w-full mt-4 text-[10px] font-bold uppercase tracking-widest h-8 gap-2 hover:bg-indigo-50 hover:text-indigo-600">
-              Detailed Breakdown
-              <ArrowUpRight className="h-3 w-3" />
-            </Button>
-          </CardContent>
-        </Card>
-      </div>
+            <Card className="shadow-sm border-border/60">
+              <CardHeader>
+                <CardTitle className="text-lg font-bold">Top Hazard Categories</CardTitle>
+                <CardDescription>Based on recent observations</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-5">
+                {[
+                  { label: 'Working at Heights', val: 45 },
+                  { label: 'PPE Non-compliance', val: 28 },
+                  { label: 'Housekeeping', val: 15 },
+                  { label: 'Electrical Safety', val: 12 },
+                ].map((item) => (
+                  <div key={item.label} className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-bold text-slate-700">{item.label}</span>
+                      <span className="text-xs font-black text-indigo-600">{item.val}%</span>
+                    </div>
+                    <div className="h-2 w-full bg-muted rounded-full overflow-hidden">
+                      <div className="h-full bg-indigo-500 rounded-full" style={{ width: `${item.val}%` }} />
+                    </div>
+                  </div>
+                ))}
+
+                <Button variant="ghost" className="w-full mt-4 text-[10px] font-bold uppercase tracking-widest h-8 gap-2 hover:bg-indigo-50 hover:text-indigo-600">
+                  Detailed Breakdown
+                  <ArrowUpRight className="h-3 w-3" />
+                </Button>
+              </CardContent>
+            </Card>
+          </div>
+        </TabsContent>
+
+        <TabsContent value="osha" className="focus-visible:outline-none">
+          <div className="max-w-4xl">
+            <div className="mb-6">
+              <h2 className="text-xl font-bold">OSHA Reporting Center</h2>
+              <p className="text-muted-foreground mt-1">Generate and download mandatory OSHA compliance reports.</p>
+            </div>
+
+            <OSHAReportGenerator incidents={incidentRecords} />
+          </div>
+        </TabsContent>
+      </Tabs>
     </div>
   )
 }
