@@ -12,6 +12,7 @@ import { TrainingKPIStrip } from "@/components/training/training-kpi-strip"
 import { CertificationsTable } from "@/components/training/certifications-table"
 import { ToolboxTalksList } from "@/components/training/toolbox-talks-list"
 import { InductionsList } from "@/components/training/inductions-list"
+import { ComplianceMatrix } from "@/components/training/compliance-matrix"
 import {
   GraduationCap,
   ShieldCheck,
@@ -22,6 +23,7 @@ import {
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useState, useMemo, useEffect } from "react"
+import Link from "next/link"
 
 export default function TrainingPage() {
   const { records, addRecord } = useSafetyRecordStore()
@@ -202,9 +204,11 @@ export default function TrainingPage() {
             <ArrowUpRight className="h-4 w-4" />
             Export Report
           </Button>
-          <Button className="gap-2 bg-indigo-600 hover:bg-indigo-700 text-white shadow-lg shadow-indigo-200 dark:shadow-none">
-            <Plus className="h-5 w-5" />
-            Schedule Session
+          <Button asChild className="gap-2 bg-indigo-600 hover:bg-indigo-700 text-white shadow-lg shadow-indigo-200 dark:shadow-none">
+            <Link href="/training/create">
+              <Plus className="h-5 w-5" />
+              Schedule Session
+            </Link>
           </Button>
         </div>
       </div>
@@ -242,11 +246,7 @@ export default function TrainingPage() {
         </TabsContent>
 
         <TabsContent value="compliance" className="focus-visible:outline-none">
-          <div className="p-20 text-center text-muted-foreground border-2 border-dashed rounded-3xl bg-muted/5">
-            <ShieldCheck className="h-12 w-12 mx-auto mb-4 opacity-30" />
-            <p className="font-bold text-lg">Overall Compliance Index</p>
-            <p className="text-sm max-w-xs mx-auto mt-2">Aggregated safety maturity scoring based on induction rates and valid certifications. Coming in Phase 3.</p>
-          </div>
+          <ComplianceMatrix certifications={certifications} inductions={inductions} />
         </TabsContent>
       </Tabs>
     </div>

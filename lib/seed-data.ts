@@ -455,8 +455,326 @@ export const seedDemoData = () => {
         }
     ];
 
+    // Seed Inductions (8 records)
+    const inductions = [
+        {
+            id: "ind-001",
+            recordNumber: "IND-2026-001",
+            title: "Site General Induction - John Doe",
+            type: "induction" as const,
+            status: "verified" as const,
+            priority: "medium" as const,
+            owner: "Safety Coordinator",
+            assignee: "John Doe",
+            location: "Site Office",
+            description: "General site safety induction",
+            createdAt: "2026-01-05T08:00:00Z",
+            updatedAt: "2026-01-05T09:30:00Z",
+            trainingCategory: "induction" as const,
+            completionDate: "2026-01-05T09:30:00Z",
+            expiryDate: "2027-01-05", // 1 year validity
+            workerName: "John Doe",
+            workerId: "USR-101",
+            templateName: "General Construction Site Induction v2.0",
+            completionRate: 100,
+            validityYears: 1
+        },
+        {
+            id: "ind-002",
+            recordNumber: "IND-2026-002",
+            title: "Site General Induction - Jane Smith",
+            type: "induction" as const,
+            status: "in_progress" as const,
+            priority: "medium" as const,
+            owner: "Safety Coordinator",
+            assignee: "Jane Smith",
+            location: "Online",
+            description: "General site safety induction",
+            createdAt: "2026-01-14T10:00:00Z",
+            updatedAt: "2026-01-14T10:15:00Z",
+            trainingCategory: "induction" as const,
+            completionDate: "",
+            workerName: "Jane Smith",
+            workerId: "USR-102",
+            templateName: "General Construction Site Induction v2.0",
+            completionRate: 45,
+            validityYears: 1
+        },
+        {
+            id: "ind-003",
+            recordNumber: "IND-2026-003",
+            title: "Visitor Induction - Tom Consultant",
+            type: "induction" as const,
+            status: "verified" as const,
+            priority: "low" as const,
+            owner: "Security",
+            assignee: "Tom Consultant",
+            location: "Gate 1",
+            description: "Visitor safety briefing",
+            createdAt: "2026-01-12T09:00:00Z",
+            updatedAt: "2026-01-12T09:15:00Z",
+            trainingCategory: "induction" as const,
+            completionDate: "2026-01-12T09:15:00Z",
+            workerName: "Tom Consultant",
+            workerId: "VIS-005",
+            templateName: "Visitor Briefing",
+            completionRate: 100,
+            validityYears: 0.1
+        },
+        {
+            id: "ind-004",
+            recordNumber: "IND-2026-004",
+            title: "Site General Induction - Mike Johnson",
+            type: "induction" as const,
+            status: "verified" as const,
+            priority: "medium" as const,
+            owner: "Safety Coordinator",
+            assignee: "Mike Johnson",
+            location: "Site Office",
+            description: "General site safety induction",
+            createdAt: "2025-06-15T08:00:00Z",
+            updatedAt: "2025-06-15T09:30:00Z",
+            trainingCategory: "induction" as const,
+            completionDate: "2025-06-15T09:30:00Z",
+            expiryDate: "2026-06-15",
+            workerName: "Mike Johnson",
+            workerId: "USR-103",
+            templateName: "General Construction Site Induction v2.0",
+            completionRate: 100,
+            validityYears: 1
+        }
+    ];
+
+    // Seed Toolbox Talks (5 records)
+    const toolboxTalks = [
+        {
+            id: "tbt-001",
+            recordNumber: "TBT-2026-001",
+            title: "Working in Heat - Hydration",
+            type: "toolbox_talk" as const,
+            status: "completed" as const,
+            priority: "medium" as const,
+            owner: "Site Supervisor",
+            assignee: "Team A",
+            location: "Break Area 1",
+            description: "Review of heat stress symptoms and hydration protocols.",
+            createdAt: "2026-01-10T07:15:00Z",
+            updatedAt: "2026-01-10T07:30:00Z",
+            trainingCategory: "toolbox_talk" as const,
+            completionDate: "2026-01-10T07:30:00Z",
+            workerName: "Multiple",
+            workerId: "GRP-001",
+            sessionDate: "2026-01-10T07:15:00Z",
+            topic: "Heat Stress & Hydration",
+            facilitator: "Bob Foreman",
+            attendanceCount: 12,
+            roster: [
+                { id: "w1", name: "Worker 1", role: "Laborer", timestamp: "2026-01-10T07:20:00Z", signed: true },
+                { id: "w2", name: "Worker 2", role: "Laborer", timestamp: "2026-01-10T07:20:00Z", signed: true },
+                // ... usually more
+            ]
+        },
+        {
+            id: "tbt-002",
+            recordNumber: "TBT-2026-002",
+            title: "Manual Handling Refresher",
+            type: "toolbox_talk" as const,
+            status: "completed" as const,
+            priority: "high" as const,
+            owner: "Safety Officer",
+            assignee: "Warehouse Team",
+            location: "Warehouse",
+            description: "Safe lifting techniques for heavy boxes.",
+            createdAt: "2026-01-08T08:00:00Z",
+            updatedAt: "2026-01-08T08:20:00Z",
+            trainingCategory: "toolbox_talk" as const,
+            completionDate: "2026-01-08T08:20:00Z",
+            workerName: "Warehouse Team",
+            workerId: "GRP-002",
+            sessionDate: "2026-01-08T08:00:00Z",
+            topic: "Manual Handling",
+            facilitator: "Sarah Safety",
+            attendanceCount: 8,
+            roster: []
+        },
+        {
+            id: "tbt-003",
+            recordNumber: "TBT-2026-003",
+            title: "Electrical Safety - LOTOTO",
+            type: "toolbox_talk" as const,
+            status: "completed" as const,
+            priority: "critical" as const,
+            owner: "Electrical Lead",
+            assignee: "Electricians",
+            location: "Electrical Room",
+            description: "Review of lock-out tag-out procedures before shutdown.",
+            createdAt: "2026-01-13T07:00:00Z",
+            updatedAt: "2026-01-13T07:30:00Z",
+            trainingCategory: "toolbox_talk" as const,
+            completionDate: "2026-01-13T07:30:00Z",
+            workerName: "Electricians",
+            workerId: "GRP-003",
+            sessionDate: "2026-01-13T07:00:00Z",
+            topic: "Electrical Isolation",
+            facilitator: "Tom Electrician",
+            attendanceCount: 5,
+            roster: []
+        }
+    ];
+
+    // Seed Certifications (15 records for Compliance Matrix)
+    const certifications = [
+        {
+            id: "cert-001",
+            recordNumber: "CERT-2026-001",
+            title: "First Aid Level 2 - John Doe",
+            type: "certification" as const,
+            status: "verified" as const,
+            priority: "medium" as const,
+            owner: "HR",
+            assignee: "John Doe",
+            location: "N/A",
+            description: "Occupational First Aid",
+            createdAt: "2025-06-01T00:00:00Z",
+            updatedAt: "2025-06-01T00:00:00Z",
+            trainingCategory: "certification" as const,
+            completionDate: "2025-06-01T00:00:00Z",
+            expiryDate: "2028-06-01", // Valid
+            workerName: "John Doe",
+            workerId: "USR-101",
+            issuingAuthority: "Red Cross",
+            certificateNumber: "FA-998877"
+        },
+        {
+            id: "cert-002",
+            recordNumber: "CERT-2026-002",
+            title: "Working at Heights - John Doe",
+            type: "certification" as const,
+            status: "revoked" as const, // For matrix
+            priority: "high" as const,
+            owner: "Safety",
+            assignee: "John Doe",
+            location: "N/A",
+            description: "Safe working at heights",
+            createdAt: "2024-01-10T00:00:00Z",
+            updatedAt: "2026-01-01T00:00:00Z",
+            trainingCategory: "certification" as const,
+            completionDate: "2024-01-10T00:00:00Z",
+            expiryDate: "2026-01-10", // Just Expired
+            workerName: "John Doe",
+            workerId: "USR-101",
+            issuingAuthority: "Safety Train Inc.",
+            certificateNumber: "WAH-111222"
+        },
+        {
+            id: "cert-003",
+            recordNumber: "CERT-2026-003",
+            title: "Confined Space Entry - Mike Johnson",
+            type: "certification" as const,
+            status: "verified" as const,
+            priority: "high" as const,
+            owner: "Safety",
+            assignee: "Mike Johnson",
+            location: "N/A",
+            description: "Confined space entry and rescue",
+            createdAt: "2025-12-01T00:00:00Z",
+            updatedAt: "2025-12-01T00:00:00Z",
+            trainingCategory: "certification" as const,
+            completionDate: "2025-12-01T00:00:00Z",
+            expiryDate: "2027-12-01",
+            workerName: "Mike Johnson",
+            workerId: "USR-103",
+            issuingAuthority: "Industrial Safety Co.",
+            certificateNumber: "CSE-444555"
+        },
+        {
+            id: "cert-004",
+            recordNumber: "CERT-2025-004",
+            title: "Forklift License - Sarah Williams",
+            type: "certification" as const,
+            status: "verified" as const,
+            priority: "medium" as const,
+            owner: "Logistics",
+            assignee: "Sarah Williams",
+            location: "N/A",
+            description: "Forklift Operation",
+            createdAt: "2023-02-15T00:00:00Z",
+            updatedAt: "2023-02-15T00:00:00Z",
+            trainingCategory: "certification" as const,
+            completionDate: "2023-02-15T00:00:00Z",
+            expiryDate: "2026-02-15", // Expiring Soon (assuming current date is ~Jan 2026)
+            workerName: "Sarah Williams",
+            workerId: "USR-104",
+            issuingAuthority: "WorkSafe",
+            certificateNumber: "FL-990088"
+        },
+        {
+            id: "cert-005",
+            recordNumber: "CERT-2026-005",
+            title: "First Aid Level 1 - Jane Smith",
+            type: "certification" as const,
+            status: "verified" as const,
+            priority: "low" as const,
+            owner: "HR",
+            assignee: "Jane Smith",
+            location: "N/A",
+            description: "Basic First Aid",
+            createdAt: "2025-08-20T00:00:00Z",
+            updatedAt: "2025-08-20T00:00:00Z",
+            trainingCategory: "certification" as const,
+            completionDate: "2025-08-20T00:00:00Z",
+            expiryDate: "2028-08-20",
+            workerName: "Jane Smith",
+            workerId: "USR-102",
+            issuingAuthority: "Red Cross",
+            certificateNumber: "FA-123456"
+        },
+        {
+            id: "cert-006",
+            recordNumber: "CERT-2026-006",
+            title: "Electrical License - Tom Electrician",
+            type: "certification" as const,
+            status: "verified" as const,
+            priority: "critical" as const,
+            owner: "HR",
+            assignee: "Tom Electrician",
+            location: "N/A",
+            description: "A-Grade Electrical License",
+            createdAt: "2024-05-10T00:00:00Z",
+            updatedAt: "2024-05-10T00:00:00Z",
+            trainingCategory: "certification" as const,
+            completionDate: "2024-05-10T00:00:00Z",
+            expiryDate: "2029-05-10",
+            workerName: "Tom Electrician",
+            workerId: "USR-105",
+            issuingAuthority: "Energy Safe",
+            certificateNumber: "EL-888777"
+        },
+        {
+            id: "cert-007",
+            recordNumber: "CERT-2026-007",
+            title: "White Card - David Chen",
+            type: "certification" as const,
+            status: "verified" as const,
+            priority: "high" as const,
+            owner: "Safety",
+            assignee: "David Chen",
+            location: "N/A",
+            description: "Construction Induction",
+            createdAt: "2022-01-01T00:00:00Z",
+            updatedAt: "2022-01-01T00:00:00Z",
+            trainingCategory: "certification" as const,
+            completionDate: "2022-01-01T00:00:00Z",
+            expiryDate: undefined, // Never expires
+            workerName: "David Chen",
+            workerId: "USR-106",
+            issuingAuthority: "WorkSafe",
+            certificateNumber: "WC-555666"
+        }
+    ];
+
     // Add all records to store
-    [...incidents, ...jsas, ...permits, ...inspections, ...observations, ...capas].forEach(record => {
+    [...incidents, ...jsas, ...permits, ...inspections, ...observations, ...capas, ...inductions, ...toolboxTalks, ...certifications].forEach(record => {
         store.addRecord(record as any);
     });
 
@@ -495,6 +813,9 @@ export const seedDemoData = () => {
     console.log(`   - ${inspections.length} Inspections`);
     console.log(`   - ${observations.length} Observations`);
     console.log(`   - ${capas.length} CAPA Actions`);
+    console.log(`   - ${inductions.length} Inductions`);
+    console.log(`   - ${toolboxTalks.length} Toolbox Talks`);
+    console.log(`   - ${certifications.length} Certifications`);
 
     return true;
 };
